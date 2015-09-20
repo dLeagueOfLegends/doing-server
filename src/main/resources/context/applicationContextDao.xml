@@ -19,8 +19,8 @@
     <!-- 数据源 -->
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
-        <property name="url" value="jdbc:mysql://localhost/demo?characterEncoding=utf-8"></property>
-        <property name="username" value="dminor"></property>
+        <property name="url" value="jdbc:mysql://123.57.223.85/doing?characterEncoding=utf-8"></property>
+        <property name="username" value="doing"></property>
         <property name="password" value="112112"></property>
     </bean>
     
@@ -33,8 +33,8 @@
     <bean id="hibernateDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://localhost/demo?characterEncoding=utf-8" />
-		<property name="user" value="dminor" />
+		<property name="jdbcUrl" value="jdbc:mysql://123.57.223.85/doing?characterEncoding=utf-8" />
+		<property name="user" value="doing" />
 		<property name="password" value="112112" />
 		<property name="maxIdleTime" value="3600"/>
 		<property name="idleConnectionTestPeriod" value="3600" />
