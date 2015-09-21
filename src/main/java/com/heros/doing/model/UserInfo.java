@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="user")
-public class User implements Serializable{
+@Table(name="userInfo")
+public class UserInfo implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -20,38 +20,38 @@ public class User implements Serializable{
 	@Column(name="id")
 	private Long id;
 	
-	@Column(name="userCode")
-    private String userCode;
-	
 	@Column(name="nickName")
     private String nickName;
+	
+	@Column(name="deviceCode")
+    private String deviceCode;
+	
+	@Column(name="userId")
+    private String userId;
+	
+	@Column(name="password")
+    private String password;
 	
 	@Column(name="sex")
     private int sex;
 	
 	@Column(name="age")
-    private String age;
-	
-	@Column(name="iconUrl")
-    private String iconUrl;
+    private int age;
 	
 	@Column(name="occupation")
     private String occupation;
 	
-	@Column(name="friendList")
-    private Long[] friendList;
+	@Column(name="iconUrl")
+    private String iconUrl;
 	
 	@Column(name="identificationMobile")
     private String identificationMobile;
 	
-	@Column(name="password")
-    private String password;
-	
 	@Column(name="registerTime")
-    private String registerTime;
+    private int registerTime;
 	
 	@Column(name="lastLoginTime")
-    private String lastLoginTime;
+    private int lastLoginTime;
 	
 	public Long getId() {
 		return id;
@@ -61,12 +61,20 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	public String getUserCode() {
-		return userCode;
+	public String getDeviceCode() {
+		return deviceCode;
 	}
 
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
+	public void setDeviceCode(String deviceCode) {
+		this.deviceCode = deviceCode;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getNickName() {
@@ -85,11 +93,11 @@ public class User implements Serializable{
 		this.sex = sex;
 	}
 
-	public String getAge() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 
@@ -109,14 +117,6 @@ public class User implements Serializable{
 		this.occupation = occupation;
 	}
 
-	public Long[] getFriendList() {
-		return friendList;
-	}
-
-	public void setFriendList(Long[] friendList) {
-		this.friendList = friendList;
-	}
-
 	public String getIdentificationMobile() {
 		return identificationMobile;
 	}
@@ -133,19 +133,19 @@ public class User implements Serializable{
 		this.password = password;
 	}
 
-	public String getRegisterTime() {
+	public int getRegisterTime() {
 		return registerTime;
 	}
 
-	public void setRegisterTime(String registerTime) {
+	public void setRegisterTime(int registerTime) {
 		this.registerTime = registerTime;
 	}
 
-	public String getLastLoginTime() {
+	public int getLastLoginTime() {
 		return lastLoginTime;
 	}
 
-	public void setLastLoginTime(String lastLoginTime) {
+	public void setLastLoginTime(int lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
 	}
 }
