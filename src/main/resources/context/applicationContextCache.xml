@@ -13,29 +13,23 @@
                          http://www.springframework.org/schema/aop 
                          http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
    	<context:component-scan base-package="com.dminor.baselib">
+	<!-- <context:exclude-filter type="regex" expression="com.sohu.tv.mobile.mvms.core.mvrs.*"></context:exclude-filter> -->
 	</context:component-scan>
-	<context:component-scan base-package="com.heros.doing.dao.impl">
-	</context:component-scan>
-    <bean id="hibernateDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="com.mysql.jdbc.Driver" />
-		<property name="jdbcUrl" value="jdbc:mysql://123.57.223.85/doing?characterEncoding=utf-8" />
-		<property name="user" value="doing" />
-		<property name="password" value="112112" />
-		<property name="maxIdleTime" value="3600"/>
-		<property name="idleConnectionTestPeriod" value="3600" />
-		<property name="initialPoolSize" value="40" />
-		<property name="maxPoolSize" value="50" />
+	<bean id="redisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxWaitMillis" value="2000"></property>
+		<property name="maxIdle" value="90"></property>
 	</bean>
-
-	<bean id="hibernateSessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="hibernateDataSource"></property>
-		<property name="packagesToScan" value="com.heros.doing.model"></property>
-		<property name="hibernateProperties">
-		      <props>
-		          <prop key="hibernate.show_sql">false</prop>
-		      </props>
-		</property>
+	<!-- <bean id="test" class="com.heros.doing.server.Test">
+		<property name="aa" value="pppp"></property>
+		<property name="bb" value="qqqq"></property>
+	</bean> -->
+	<bean id="jedis" class="com.dminor.baselib.jedis.impl.SRedis">
+		<constructor-arg index="0" ref="redisPoolConfig"/>
+		<constructor-arg index="1" value="123.57.223.85"/>
+		<constructor-arg index="2" value="6379"/>
+		<constructor-arg index="3" value="123.57.223.85"/>
+		<constructor-arg index="4" value="6379"/>
+		<constructor-arg index="5" value="2000"/>
+		<constructor-arg index="6" value="1"/>
 	</bean>
 </beans>
