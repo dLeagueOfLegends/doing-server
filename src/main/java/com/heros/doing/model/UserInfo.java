@@ -48,10 +48,10 @@ public class UserInfo implements Serializable{
     private String identificationMobile;
 	
 	@Column(name="registerTime")
-    private int registerTime;
+    private long registerTime;
 	
 	@Column(name="lastLoginTime")
-    private int lastLoginTime;
+    private long lastLoginTime;
 	
 	public Long getId() {
 		return id;
@@ -133,19 +133,19 @@ public class UserInfo implements Serializable{
 		this.password = password;
 	}
 
-	public int getRegisterTime() {
+	public long getRegisterTime() {
 		return registerTime;
 	}
 
-	public void setRegisterTime(int registerTime) {
+	public void setRegisterTime(long registerTime) {
 		this.registerTime = registerTime;
 	}
 
-	public int getLastLoginTime() {
+	public long getLastLoginTime() {
 		return lastLoginTime;
 	}
 
-	public void setLastLoginTime(int lastLoginTime) {
+	public void setLastLoginTime(long lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
 	}
 }

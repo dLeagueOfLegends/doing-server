@@ -2,6 +2,7 @@ package com.heros.doing.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,23 +11,54 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dminor.baselib.encrypt.AESCoder;
+import com.heros.doing.constants.RedisConstants;
+import com.heros.doing.model.UserInfo;
+import com.heros.doing.service.CommonService;
+import com.heros.doing.service.UserService;
 
 @Controller
 @RequestMapping(value = "/do")
 public class UserController extends BaseController{
+	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	CommonService commonService;
 
 	@RequestMapping(value = "gi", method = { RequestMethod.POST })
 	public void register(@RequestBody String requestBody, HttpServletResponse response) {
 		int status = 200;
 		String statusText = "ok";
+		JSONObject resData = null;
 		String data = AESCoder.decryptBase64ToUtf8(requestBody, AESCoder.defaultPassword);
 		if(data == null){
 			status = 401;
 			statusText = "请求参数错误!";
 		}else{
 			JSONObject dataJson = JSON.parseObject(data);
-			
+			UserInfo userInfo = userService.createUser(dataJson);
+			if(userInfo == null){
+				status = 508;
+				statusText = "创建用户失败！";
+			}else{
+				if(!userService.addUserInfo(userInfo)){
+					status = 508;
+					statusText = "创建用户失败！"; 
+				}else{
+					resData = new JSONObject();
+					resData.put("userId", userInfo.getUserId());
+					resData.put("password", userInfo.getPassword());
+					resData.put("token", commonService.getToken(userInfo.getUserId()));
+					resData.put("expire", RedisConstants.TOKEN_EXPIRE);
+				}
+			}
 		}
+		JSONObject res = new JSONObject();
+		res.put("status", status);
+		res.put("statusText", statusText);
+		res.put("data", resData);
+		this.printNoCache(response, res.toJSONString());
 	}
 	
 	@RequestMapping(value = "ke", method = { RequestMethod.POST })
