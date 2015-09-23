@@ -17,7 +17,10 @@ public class CommonServiceImpl implements CommonService{
 	@Override
 	public String getToken(String userId){
 		String token = AESCoder.encryptToBase64(userId + System.currentTimeMillis(), AESCoder.defaultPassword);
-		redis.setEx(RedisConstants.TOKEN_KEY + token, RedisConstants.TOKEN_EXPIRE, "");
+		if(token != null && token.length() > 32){
+			token = token.substring(0, 32);
+		}
+		redis.setEx(RedisConstants.TOKEN_KEY + token, RedisConstants.TOKEN_EXPIRE + 100, "");
 		return token;
 	}
 }

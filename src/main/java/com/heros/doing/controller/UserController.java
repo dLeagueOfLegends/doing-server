@@ -2,6 +2,8 @@ package com.heros.doing.controller;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,7 @@ import com.heros.doing.service.UserService;
 @Controller
 @RequestMapping(value = "/do")
 public class UserController extends BaseController{
+	private static final Logger logger = LoggerFactory.getLogger(UserController.class); 
 	
 	@Autowired
 	UserService userService;
@@ -31,28 +34,35 @@ public class UserController extends BaseController{
 		int status = 200;
 		String statusText = "ok";
 		JSONObject resData = null;
-		String data = AESCoder.decryptBase64ToUtf8(requestBody, AESCoder.defaultPassword);
-		if(data == null){
-			status = 401;
-			statusText = "请求参数错误!";
-		}else{
-			JSONObject dataJson = JSON.parseObject(data);
-			UserInfo userInfo = userService.createUser(dataJson);
-			if(userInfo == null){
-				status = 508;
-				statusText = "创建用户失败！";
+		try{
+			logger.error("body, {}", requestBody);
+			String data = AESCoder.decryptBase64ToUtf8(requestBody, AESCoder.defaultPassword);
+			logger.error("data, {}", data);
+			if(data == null){
+				status = 401;
+				statusText = "请求参数错误!";
 			}else{
-				if(!userService.addUserInfo(userInfo)){
+				JSONObject dataJson = JSON.parseObject(data);
+				logger.error("dataJson, {}", dataJson);
+				UserInfo userInfo = userService.createUser(dataJson);
+				if(userInfo == null){
 					status = 508;
-					statusText = "创建用户失败！"; 
+					statusText = "创建用户失败！";
 				}else{
-					resData = new JSONObject();
-					resData.put("userId", userInfo.getUserId());
-					resData.put("password", userInfo.getPassword());
-					resData.put("token", commonService.getToken(userInfo.getUserId()));
-					resData.put("expire", RedisConstants.TOKEN_EXPIRE);
+					if(!userService.addUserInfo(userInfo)){
+						status = 508;
+						statusText = "创建用户失败！"; 
+					}else{
+						resData = new JSONObject();
+						resData.put("userId", userInfo.getUserId());
+						resData.put("password", userInfo.getPassword());
+						resData.put("token", commonService.getToken(userInfo.getUserId()));
+						resData.put("expire", RedisConstants.TOKEN_EXPIRE);
+					}
 				}
 			}
+		}catch(Exception e){
+			logger.error("register eror, {}", e);
 		}
 		JSONObject res = new JSONObject();
 		res.put("status", status);
@@ -63,6 +73,36 @@ public class UserController extends BaseController{
 	
 	@RequestMapping(value = "ke", method = { RequestMethod.POST })
 	public void getToken(@RequestBody String requestBody, HttpServletResponse response) {
-
+		int status = 200;
+		String statusText = "ok";
+		JSONObject resData = null;
+		try{
+			logger.error("body, {}", requestBody);
+			String data = AESCoder.decryptBase64ToUtf8(requestBody, AESCoder.defaultPassword);
+			logger.error("data, {}", data);
+			if(data == null){
+				status = 401;
+				statusText = "请求参数错误!";
+			}else{
+				JSONObject dataJson = JSON.parseObject(data);
+				String userId = dataJson.getString("userId");
+				if(userId == null){
+					status = 401;
+					statusText = "请求参数错误!";
+				}else{
+					String token = commonService.getToken(dataJson.getString("userId"));
+					resData = new JSONObject();
+					resData.put("token", token);
+					resData.put("expire", RedisConstants.TOKEN_EXPIRE);
+				}
+			}
+		}catch(Exception e){
+			logger.error("getToken eror, {}", e);
+		}
+		JSONObject res = new JSONObject();
+		res.put("status", status);
+		res.put("statusText", statusText);
+		res.put("data", resData);
+		this.printNoCache(response, res.toJSONString());
 	}
 }

@@ -1,5 +1,7 @@
 package com.heros.doing.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import com.heros.doing.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
+	private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 	
 	@Autowired
 	private SRedis redis;
@@ -33,16 +36,17 @@ public class UserServiceImpl implements UserService{
 		UserInfo userInfo = new UserInfo();
 		String deviceCode = postJson.getString("deviceCode");
 		Long registerTime = System.currentTimeMillis();
+		logger.error("time, {}", registerTime);
 		String md5 = FileUtil.getMD5(deviceCode + registerTime);
 		if(md5 == null){
 			return null;
 		}
-		String userId = md5.substring(0, 5) + redis.incr(RedisConstants.USERID_GEN_INCR);
-		String password = md5.substring(8);
+		String userId = md5.substring(0, 7) + redis.incr(RedisConstants.USERID_GEN_INCR);
+		String password = md5.substring(8, 20);
 		
 		userInfo.setAge(postJson.getIntValue("age"));
 		userInfo.setDeviceCode(deviceCode);
-		userInfo.setIconUrl("xxx");
+		userInfo.setIconUrl("http://p1.gexing.com/G1/M00/AC/85/rBACFFPzVnXhKBDLAACQ503PAK8037.jpg");
 		userInfo.setLastLoginTime(registerTime);
 		userInfo.setNickName(postJson.getString("nickName"));
 		userInfo.setOccupation(postJson.getString("occupation"));
