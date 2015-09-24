@@ -1,14 +1,19 @@
 package com.heros.doing.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dminor.baselib.jedis.impl.SRedis;
 import com.dminor.baselib.utils.FileUtil;
 import com.heros.doing.constants.RedisConstants;
+import com.heros.doing.constants.ServerConstants;
 import com.heros.doing.dao.UserInfoDao;
 import com.heros.doing.model.UserInfo;
 import com.heros.doing.service.UserService;
@@ -61,6 +66,23 @@ public class UserServiceImpl implements UserService{
 	public boolean addUserInfo(UserInfo userInfo){
 		userInfoDao.addUserInfo(userInfo);
 		return true;
+	}
+	
+	@Override
+	public String saveUserIcon(MultipartFile iconFile){
+		String fileName = System.currentTimeMillis() + ".jpg";
+		try {
+			File iconDir = new File(ServerConstants.USER_ICON_DIR);
+			if(!iconDir.exists()){
+				iconDir.mkdirs();
+			}
+			iconFile.transferTo(new File(ServerConstants.USER_ICON_DIR + "/" + fileName));
+		} catch (IllegalStateException e) {
+			logger.error("saveUserIcon error1, {}", e);
+		} catch (IOException e) {
+			logger.error("saveUserIcon error2, {}", e);
+		}
+		return ServerConstants.USER_ICON_URL + "/" + fileName;
 	}
 
 }

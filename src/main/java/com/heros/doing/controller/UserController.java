@@ -1,5 +1,7 @@
 package com.heros.doing.controller;
 
+import java.io.File;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -30,13 +34,18 @@ public class UserController extends BaseController{
 	CommonService commonService;
 
 	@RequestMapping(value = "gi", method = { RequestMethod.POST })
-	public void register(@RequestBody String requestBody, HttpServletResponse response) {
+	public void register(MultipartHttpServletRequest request, HttpServletResponse response) {
 		int status = 200;
 		String statusText = "ok";
 		JSONObject resData = null;
+		MultipartFile imgFile = request.getFile("imgFile");
+		String imgSelect = request.getParameter("imgSelect");
+		String dataEncrypt = request.getParameter("data");
+		logger.error("body, {}", dataEncrypt);
+		logger.error("imgSelect, {}", imgSelect);
 		try{
-			logger.error("body, {}", requestBody);
-			String data = AESCoder.decryptBase64ToUtf8(requestBody, AESCoder.defaultPassword);
+			String iconUrl = userService.saveUserIcon(imgFile);
+			String data = AESCoder.decryptBase64ToUtf8(dataEncrypt, AESCoder.defaultPassword);
 			logger.error("data, {}", data);
 			if(data == null){
 				status = 401;
@@ -49,6 +58,7 @@ public class UserController extends BaseController{
 					status = 508;
 					statusText = "创建用户失败！";
 				}else{
+					userInfo.setIconUrl(iconUrl);
 					if(!userService.addUserInfo(userInfo)){
 						status = 508;
 						statusText = "创建用户失败！"; 

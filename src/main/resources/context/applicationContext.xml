@@ -15,4 +15,6 @@
 
 	<import resource="applicationContextDao.xml"/> 
 	<import resource="applicationContextCache.xml"/> 
+	<!-- 处理文件上传  -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" p:defaultEncoding="utf-8"/> 
 </beans>
