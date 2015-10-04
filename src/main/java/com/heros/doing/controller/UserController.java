@@ -1,7 +1,5 @@
 package com.heros.doing.controller;
 
-import java.io.File;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -21,6 +19,7 @@ import com.heros.doing.constants.RedisConstants;
 import com.heros.doing.model.UserInfo;
 import com.heros.doing.service.CommonService;
 import com.heros.doing.service.UserService;
+import com.heros.doing.utils.ServerUtil;
 
 @Controller
 @RequestMapping(value = "/do")
@@ -74,10 +73,7 @@ public class UserController extends BaseController{
 		}catch(Exception e){
 			logger.error("register eror, {}", e);
 		}
-		JSONObject res = new JSONObject();
-		res.put("status", status);
-		res.put("statusText", statusText);
-		res.put("data", resData);
+		JSONObject res = ServerUtil.genResJson(status, statusText, resData);
 		this.printNoCache(response, res.toJSONString());
 	}
 	
@@ -109,10 +105,8 @@ public class UserController extends BaseController{
 		}catch(Exception e){
 			logger.error("getToken eror, {}", e);
 		}
-		JSONObject res = new JSONObject();
-		res.put("status", status);
-		res.put("statusText", statusText);
-		res.put("data", resData);
+		JSONObject res = ServerUtil.genResJson(status, statusText, resData);
 		this.printNoCache(response, res.toJSONString());
 	}
+	
 }

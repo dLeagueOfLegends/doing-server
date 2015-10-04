@@ -4,4 +4,6 @@ public interface CommonService {
 
 	String getToken(String userId);
 
+	boolean checkToken(String token);
+
 }

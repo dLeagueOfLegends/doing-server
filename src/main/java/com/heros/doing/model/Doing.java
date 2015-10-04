@@ -20,8 +20,8 @@ public class Doing implements Serializable{
     @Column(name="id")
     private Long id;
 	
-    @Column(name="ownerId")
-    private Long ownerId;
+    @Column(name="userId")
+    private String userId;
 
     @Column(name="content")
     private String content;
@@ -30,16 +30,16 @@ public class Doing implements Serializable{
     private String[] imgList;
     
     @Column(name="publishTime")
-    private String publishTime;
+    private Long publishTime;
     
     @Column(name="device")
     private String device;
     
-    @Column(name="area")
-    private String area;
+    @Column(name="position")
+    private String position;
     
     @Column(name="commentList")
-    private String[] commentList;
+    private int[] commentList;
 
 	public Long getId() {
 		return id;
@@ -49,12 +49,12 @@ public class Doing implements Serializable{
 		this.id = id;
 	}
 
-	public Long getOwnerId() {
-		return ownerId;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setOwnerId(Long ownerId) {
-		this.ownerId = ownerId;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getContent() {
@@ -73,11 +73,11 @@ public class Doing implements Serializable{
 		this.imgList = imgList;
 	}
 
-	public String getPublishTime() {
+	public Long getPublishTime() {
 		return publishTime;
 	}
 
-	public void setPublishTime(String publishTime) {
+	public void setPublishTime(Long publishTime) {
 		this.publishTime = publishTime;
 	}
 
@@ -89,19 +89,19 @@ public class Doing implements Serializable{
 		this.device = device;
 	}
 
-	public String getArea() {
-		return area;
+	public String getPosition() {
+		return position;
 	}
 
-	public void setArea(String area) {
-		this.area = area;
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
-	public String[] getCommentList() {
+	public int[] getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(String[] commentList) {
+	public void setCommentList(int[] commentList) {
 		this.commentList = commentList;
 	}
 }

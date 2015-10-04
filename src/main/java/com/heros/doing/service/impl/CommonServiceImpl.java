@@ -23,4 +23,12 @@ public class CommonServiceImpl implements CommonService{
 		redis.setEx(RedisConstants.TOKEN_KEY + token, RedisConstants.TOKEN_EXPIRE + 100, "");
 		return token;
 	}
+	
+	@Override
+	public boolean checkToken(String token){
+		if(token == null || token.length() < 15){
+			return false;
+		}
+		return redis.exists(RedisConstants.TOKEN_KEY + token);
+	}
 }

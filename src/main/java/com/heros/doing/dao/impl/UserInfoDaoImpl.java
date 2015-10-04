@@ -13,4 +13,8 @@ public class UserInfoDaoImpl extends CommonDao implements UserInfoDao{
 	public void addUserInfo(UserInfo userInfo){
 		this.save(userInfo);
 	}
+	
+//	public UserInfo getUserInfo(String userId){
+//		this.
+//	}
 }
