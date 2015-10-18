@@ -2,11 +2,13 @@ package com.heros.doing.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
@@ -64,8 +66,18 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public boolean addUserInfo(UserInfo userInfo){
-		userInfoDao.addUserInfo(userInfo);
+		userInfoDao.save(userInfo);
 		return true;
+	}
+	
+	@Override
+	@Transactional
+	public UserInfo getUserInfoById(String userId){
+		List<UserInfo> list = userInfoDao.list("id", false, "userId", userId);
+        if(list != null && !list.isEmpty()){
+            return list.get(0);
+        }
+        return null;
 	}
 	
 	@Override

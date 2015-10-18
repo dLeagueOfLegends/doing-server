@@ -18,9 +18,9 @@ import com.heros.doing.model.UserInfo;
 public class HelloController extends BaseController{
 	private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
 	
-	@Autowired
-	UserInfoDao userInfoDao;
-	
+//	@Autowired
+//	UserInfoDao userInfoDao;
+//	
 	@Autowired
 	CommonDao commonDao;
 	
@@ -34,7 +34,7 @@ public class HelloController extends BaseController{
 		userInfo.setIdentificationMobile("1111");
 		userInfo.setLastLoginTime(1233);
 		userInfo.setNickName("sdsad");
-		userInfoDao.addUserInfo(userInfo);
+//		userInfoDao.addUserInfo(userInfo);
 		this.printNoCache(response, "hello.");
 	}
 }
