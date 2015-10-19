@@ -96,7 +96,7 @@
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
     </aop:config>
 
-<!-- 
+
 	<tx:advice id="txAdvice1" transaction-manager="txManager1">
         <tx:attributes>
             <tx:method name="*" propagation="REQUIRED"
@@ -105,7 +105,7 @@
     </tx:advice>
     <aop:config expose-proxy="true" proxy-target-class="false">
         <aop:pointcut id="txPointcut1"
-            expression="execution(* com.sohu.starfans.service.impl.*.*(..))" />
+            expression="execution(* com.heros.doing.service.impl.*.*(..))" />
         <aop:advisor advice-ref="txAdvice1" pointcut-ref="txPointcut1" />
     </aop:config>
     
@@ -115,5 +115,5 @@
   	
   	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource"></property> 
-	</bean> -->
+	</bean>
 </beans>
