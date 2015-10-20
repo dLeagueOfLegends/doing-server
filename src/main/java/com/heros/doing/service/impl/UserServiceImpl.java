@@ -71,7 +71,12 @@ public class UserServiceImpl implements UserService{
 	}
 	
 	@Override
-	@Transactional
+	public boolean setUserInfo(UserInfo userInfo){
+		userInfoDao.update(userInfo);
+		return true;
+	}
+	
+	@Override
 	public UserInfo getUserInfoById(String userId){
 		List<UserInfo> list = userInfoDao.list("id", false, "userId", userId);
         if(list != null && !list.isEmpty()){

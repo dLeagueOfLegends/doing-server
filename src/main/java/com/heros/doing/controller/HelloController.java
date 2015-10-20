@@ -35,6 +35,6 @@ public class HelloController extends BaseController{
 		userInfo.setLastLoginTime(1233);
 		userInfo.setNickName("sdsad");
 //		userInfoDao.addUserInfo(userInfo);
-		this.printNoCache(response, "hello.");
+		this.responseNoCache(response, "hello.", null);
 	}
 }

@@ -13,4 +13,6 @@ public interface UserService {
 	String saveUserIcon(MultipartFile iconFile);
 
 	UserInfo getUserInfoById(String userId);
+
+	boolean setUserInfo(UserInfo userInfo);
 }

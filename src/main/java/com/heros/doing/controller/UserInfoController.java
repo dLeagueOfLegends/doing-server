@@ -14,7 +14,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.heros.doing.model.UserInfo;
 import com.heros.doing.service.CommonService;
 import com.heros.doing.service.UserService;
-import com.heros.doing.utils.ServerUtil;
+import com.heros.doing.utils.ResponseUtil;
 
 @Controller
 @RequestMapping(value = "userinfo")
@@ -28,26 +28,50 @@ public class UserInfoController extends BaseController{
 
 	@RequestMapping(value = "get", method = RequestMethod.GET)
 	public void getUserInfo(HttpServletRequest request, HttpServletResponse response, String token, String userId){
-		int status = 200;
-		String statusText = "ok";
 		JSONObject resData = null;
-		if(!commonService.checkToken(token)){
-			status = 401;
-			statusText = "非法token！";
-		}else{
-			UserInfo userInfo = userService.getUserInfoById(userId);
-			resData = new JSONObject();
-			resData.put("nickName", userInfo.getNickName());
-			resData.put("sex", userInfo.getSex());
-			resData.put("age", userInfo.getAge());
-			resData.put("occupation", userInfo.getOccupation());
+		try{
+			if(!commonService.checkToken(token)){
+				ResponseUtil.responseLackParams(response);
+				return;
+			}else{
+				UserInfo userInfo = userService.getUserInfoById(userId);
+				resData = new JSONObject();
+				resData.put("nickName", userInfo.getNickName());
+				resData.put("sex", userInfo.getSex());
+				resData.put("age", userInfo.getAge());
+				resData.put("occupation", userInfo.getOccupation());
+			}
+		}catch(Exception e){
+			logger.error("getUserInfo error, {}", e);
+			ResponseUtil.responseSysError(response);
+			return;
 		}
-		JSONObject res = ServerUtil.genResJson(status, statusText, resData);
-		this.printNoCache(response, res.toJSONString());
+		ResponseUtil.responseOK(response, resData);
 	}
 	
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public void saveUserInfo(HttpServletRequest request, HttpServletResponse response){
-		
+	public void saveUserInfo(HttpServletRequest request, HttpServletResponse response, String userJson){
+		JSONObject userObj = null, resData = null;
+		try{
+			if(userJson != null && userJson.length() > 3){
+				userObj = JSONObject.parseObject(userJson);
+			}
+			if(userObj == null){
+				ResponseUtil.responseLackParams(response);
+				return;
+			}else{
+				UserInfo userInfo = new UserInfo();
+				userInfo.setAge(userObj.getIntValue("age"));
+				userInfo.setNickName(userObj.getString("nickName"));
+				userInfo.setSex(userObj.getIntValue("sex"));
+				userInfo.setOccupation(userObj.getString("occupation"));
+				userService.setUserInfo(userInfo);
+			}
+		}catch(Exception e){
+			logger.error("saveUserInfo error, {}", e);
+			ResponseUtil.responseSysError(response);
+			return;
+		}
+		ResponseUtil.responseOK(response, resData);
 	}
 }

@@ -74,7 +74,7 @@ public class UserController extends BaseController{
 			logger.error("register eror, {}", e);
 		}
 		JSONObject res = ServerUtil.genResJson(status, statusText, resData);
-		this.printNoCache(response, res.toJSONString());
+		this.responseNoCache(response, res.toJSONString(), null);
 	}
 	
 	@RequestMapping(value = "ke", method = { RequestMethod.POST })
@@ -106,7 +106,7 @@ public class UserController extends BaseController{
 			logger.error("getToken eror, {}", e);
 		}
 		JSONObject res = ServerUtil.genResJson(status, statusText, resData);
-		this.printNoCache(response, res.toJSONString());
+		this.responseNoCache(response, res.toJSONString(), null);
 	}
 	
 	
