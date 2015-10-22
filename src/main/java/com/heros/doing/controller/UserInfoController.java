@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alibaba.fastjson.JSONObject;
 import com.heros.doing.model.UserInfo;
@@ -26,8 +27,9 @@ public class UserInfoController extends BaseController{
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = "get", method = RequestMethod.GET)
+	@RequestMapping(value = "/get", method = RequestMethod.GET)
 	public void getUserInfo(HttpServletRequest request, HttpServletResponse response, String token, String userId){
+		logger.debug("getUserInfo, {}, {}", token, userId);
 		JSONObject resData = null;
 		try{
 			if(!commonService.checkToken(token)){
@@ -49,8 +51,9 @@ public class UserInfoController extends BaseController{
 		ResponseUtil.responseOK(response, resData);
 	}
 	
-	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public void saveUserInfo(HttpServletRequest request, HttpServletResponse response, String userJson){
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	public void saveUserInfo(HttpServletRequest request, HttpServletResponse response, String userJson, String token){
+		logger.debug("saveUserInfo, {}, {}", token, userJson);
 		JSONObject userObj = null, resData = null;
 		try{
 			if(userJson != null && userJson.length() > 3){
