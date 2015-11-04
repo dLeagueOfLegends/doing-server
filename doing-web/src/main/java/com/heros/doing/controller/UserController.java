@@ -44,7 +44,8 @@ public class UserController extends BaseController{
 		logger.error("imgSelect, {}", imgSelect);
 		try{
 			String iconUrl = userService.saveUserIcon(imgFile);
-			String data = AESCoder.decryptBase64ToUtf8(dataEncrypt, AESCoder.defaultPassword);
+//			String data = AESCoder.decryptBase64ToUtf8(dataEncrypt, AESCoder.defaultPassword);
+			String data = dataEncrypt;
 			logger.error("data, {}", data);
 			if(data == null){
 				status = 401;
@@ -84,7 +85,8 @@ public class UserController extends BaseController{
 		JSONObject resData = null;
 		try{
 			logger.error("body, {}", requestBody);
-			String data = AESCoder.decryptBase64ToUtf8(requestBody, AESCoder.defaultPassword);
+//			String data = AESCoder.decryptBase64ToUtf8(requestBody, AESCoder.defaultPassword);
+			String data = requestBody;
 			logger.error("data, {}", data);
 			if(data == null){
 				status = 401;
