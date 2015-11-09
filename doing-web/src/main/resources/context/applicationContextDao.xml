@@ -47,10 +47,10 @@
         destroy-method="close">
        <property name="driverClass" value="com.mysql.jdbc.Driver" />
         <property name="jdbcUrl">
-            <value>jdbc:mysql://123.57.223.85:3306/doing?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull</value>
+            <value>jdbc:mysql://121.42.33.1:3306/doing?autoReconnect=true&amp;zeroDateTimeBehavior=convertToNull</value>
         </property>
         <property name="user" value="doing" />
-        <property name="password" value="112112" />
+        <property name="password" value="zx415@#12" />
         <property name="minPoolSize" value="5" />
         <property name="maxPoolSize" value="10" />
         <property name="initialPoolSize" value="10" />

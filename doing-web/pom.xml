@@ -110,7 +110,7 @@
 		</dependency>
 		
 		<!-- ++++++++++++++++++test++++++++++++++++++ -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.heros.doing</groupId>
 			<artifactId>doing-service</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
@@ -129,7 +129,7 @@
 			<groupId>com.github.sgroschupf</groupId>
 			<artifactId>zkclient</artifactId>
 			<version>0.1</version>
-		</dependency>
+		</dependency> -->
 
 	</dependencies>
 	<build>
