@@ -1,0 +1,17 @@
+配置hibernate的current session的时候总报org.hibernate.HibernateException: No Session found for current thread
+百思不得其解，然后在web.xml里加上一下配置就好了，没弄明白：
+
+<!-- open session filter -->
+    <filter>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+        <init-param>
+            <param-name>sessionFactoryBeanName</param-name>
+            <param-value>sessionFactory</param-value>
+        </init-param>
+    </filter>
+ 
+    <filter-mapping>
+        <filter-name>openSessionInViewFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 1.Logbacks Status Printer Status Messages and dynamic Log Configurations 
+	Logback includes a StatusPrinter: please add debug=”true” debug = “true” 
+	causes Logback at Startup to dump the Status of the configuration file – 
+	very handy. 2.Logback scans Configuration (automagically re-configuration) 
+	another very useful attribute is Scan=”true” scan=”true” allows you to change 
+	the Configuration File while your application is running – so its very easy 
+	to add a Class with Debug Level while testing a running application. If scan=”true” 
+	Logback scans for changes (default: every 60 seconds) and if Logback founds 
+	changes, Logback reconfigures itself I really like this feature. You can 
+	even register a status listener to supervise logbacks internal state. -->
+<configuration debug="false" scan="true">
+	
+	<property name="LEVEL" value="WARN" />
+	
+	<property name="PRINT_LOG_BASE_PATH" value="/data/logs" />   
+	<property name="LOG_STYLE" value="[%date] [%file:%line] [%level] %msg%n" />
+	<property name="LOG_NAME" value="doing-server" /> 
+	<jmxConfigurator />
+	
+	<timestamp key="bySecond" datePattern="yyyyMMdd'T'HHmmss" />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>${LOG_STYLE}</Pattern>
+		</layout>
+	</appender>
+	
+	<appender name="FILE_MANAGER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	
+		<file>${PRINT_LOG_BASE_PATH}/${LOG_NAME}.log</file>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${PRINT_LOG_BASE_PATH}/${LOG_NAME}.log.%d{yyyyMMdd}</fileNamePattern>
+			<!-- maxHistory>30</maxHistory -->
+		</rollingPolicy>
+ 
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>${LEVEL}</level>
+		</filter>
+		<!-- <filter class="ch.qos.logback.classic.filter.LevelFilter"> <level>DEBUG</level> 
+			<OnMismatch>DENY</OnMismatch> <OnMatch>ACCEPT</OnMatch> </filter> -->
+ 
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>${LOG_STYLE}</Pattern>
+		</layout>
+	</appender>
+	 
+	<!-- 日志输出级别 -->
+	  
+	<root level="INFO"> 
+		<appender-ref ref="STDOUT"/>
+	</root>
+	
+	<root level="${LEVEL}">
+	   <appender-ref ref="FILE_MANAGER" />
+	</root>	
+	 
+	<!-- 专门定制，优先级从高到低分别是 ERROR、WARN、INFO、DEBUG -->   
+	<logger name="com.heros" level="${LEVEL}"/>
+	<logger name="org.springframework" level="WARN"/>
+	<logger name="org.hibernate" level="WARN"/>
+	<logger name="org.apache" level="WARN"/>
+
+</configuration>
